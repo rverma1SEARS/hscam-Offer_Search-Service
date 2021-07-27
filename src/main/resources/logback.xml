@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="flase">
+	<shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>C:\Users\rverma1\Documents\Offers\customer-card-details-service.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>C:\Users\rverma1\Documents\Offers\customer-card-details-service.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%d %-5p PID[%X{trackingId}] CLIENT[%X{clientId}] CLASS[%logger{10}] - %m%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="LOG_HEART_BEAT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:\Users\rverma1\Documents\Offers\LogPulse.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>C:\Users\rverma1\Documents\Offers\LogPulse.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>2</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                 %d %-5p PID[%X{trackingId}] CLIENT[%X{clientId}] CLASS[%logger{10}] - %m%n
+            </pattern>
+        </encoder>
+    </appender>
+    
+    <!-- <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d %-5p PID[%X{trackingId}] CLIENT[%X{clientId}] CLASS[%logger{10}] - %m%n
+			</pattern>
+		</encoder>
+	</appender> -->
+	
+	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="FILE"/>
+    </appender>
+	
+	<logger name="com.searshc.hs.utils.logging.LogPulse" additivity="false">
+        <appender-ref ref="LOG_HEART_BEAT_FILE" />
+    </logger>
+	<logger name="com.searshc.hs" level="DEBUG" additivity="false">
+		<appender-ref ref="ASYNC" />
+		<!-- <appender-ref ref="STDOUT" /> -->
+	</logger>
+	<logger name="org.apache.cxf" level="INFO" additivity="false">
+		<appender-ref ref="ASYNC" />
+		<!-- <appender-ref ref="STDOUT" /> -->
+	</logger>
+	<root level="INFO">
+		<appender-ref ref="ASYNC"/>
+		<!-- <appender-ref ref="STDOUT" /> -->
+	</root>
+</configuration>

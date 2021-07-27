@@ -1,0 +1,62 @@
+server:
+  servlet:
+    context-path: /HSCCNOfferSearchService/
+
+spring:
+  profiles: 
+    active: dev
+
+logging:
+  config: classpath:logback.xml
+   
+  
+info: 
+  app:
+    name: HSCCNOfferSearchService
+    description: Home Services Offer Search Service.This service contains methods that will fetch customer offer and its details.
+    support: rahul.verma@transformco.com
+    
+management:
+  endpoint:
+      info:
+        enabled: true
+      health:
+        enabled: true
+      metrics:
+        enabled: true
+    
+
+
+---
+
+spring:
+  profiles: dev
+  
+  datasource:
+     url : jdbc:mysql://cam-offersengine-qa.nonprod.shs.oh.transformco.com:3372/offers_engine
+     username : cam_offers_svc
+     password : 'C@mR@a#W$i%e12!'
+     driver-class-name : com.mysql.cj.jdbc.Driver
+     maxActive : 1
+     maxIdle : 1
+     pingQuery : SELECT 1
+     poolMaximumCheckoutTime : 120000
+     pingEnabled : true
+     poolPingConnectionsNotUsedFor : 30000
+ 
+token:
+  pubkey:
+    loc: classpath:pubKey
+  enabled : false
+---
+
+spring:
+  profiles: qa
+  
+
+
+---
+
+spring:
+  profiles: prod
+  
